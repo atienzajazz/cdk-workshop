@@ -26,5 +26,21 @@ export class WorkShopPipelineStack extends cdk.Stack {
 
     const deploy = new WorkshopPipelineStage(this, 'Deploy');
     const deployStage = pipeline.addStage(deploy);
+
+    deployStage.addPost(
+      new CodeBuildStep('TestViewerEndpoint', {
+        projectName: 'TestViewerEndpoint',
+        envFromCfnOutputs: {
+          ENDPOINT_URL: deploy.hcViewerUrl,
+        },
+        commands: ['curl -Ssf $ENDPOINT_URL'],
+      }),
+      new CodeBuildStep('TestAPIGatewayEndpoint', {
+        envFromCfnOutputs: {
+          ENDPOINT_URL: deploy.hcEndpoint,
+        },
+        commands: ['curl -Ssf $ENDPOINT_URL', 'curl -Ssf $ENDPOINT_URL/hello'],
+      })
+    );
   }
 }
