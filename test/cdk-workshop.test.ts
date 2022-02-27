@@ -1,7 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
-import { Template, Match, Capture } from 'aws-cdk-lib/assertions';
+import { Capture, Template } from 'aws-cdk-lib/assertions';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as CdkWorkshop from '../lib/cdk-workshop-stack';
 import { HitCounter } from '../lib/hitcounter';
 
 let stack: cdk.Stack;
